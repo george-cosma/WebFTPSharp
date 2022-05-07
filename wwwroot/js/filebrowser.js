@@ -1,4 +1,8 @@
-﻿var connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
+﻿import Path from "./path.js"
+
+let path = new Path();
+
+let connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
 connection.start();
 
 /*

@@ -21,7 +21,6 @@ namespace WebFTPSharp.Pages
 		public void OnGet()
 		{
 			DynamicString = "Hello World";
-
 		}
 
 		public string DynamicString { get; set; }

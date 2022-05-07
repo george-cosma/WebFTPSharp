@@ -2,33 +2,48 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    
 }
-<script defer src="~/js/filebrowser.js"></script>
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <div class="container">
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-2">Message</div>
-            <div class="col-4"><input type="text" id="messageInput" /></div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-6">
-                <input type="button" id="sendButton" value="Send Message" />
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <hr />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
-    </div>
+<script defer type="module" src="~/js/filebrowser.js"></script>
+<!--
+<meta name="path" content={path_to_string(path)}>
+<section class="container">
+  <section class="phx-hero">
+    <h1>WebFTP</h1>
+    <h3>Running on <b><%= getServerURL() %></b></h3>
+  </section>
+</section>
+<div class="form-group">
+  <label>Upload</label>
+  <input class="form-control" id="user_file" type="file">
+  <input class="form-control" id="submit_file" type="submit">
 </div>
+<div id="progress-bar-container">
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+    <p class="progress-bar-text-percent">0%</p>
+  </div>
+</div>
+
+<section style="margin:0 2vw">
+  <h3>Server Files</h3>
+  <%= if path != [] do %>
+  <div class="file-item">
+      <img class="file-item-image" src="/images/folder.png"/>
+      <a class="file-item-name bold" phx-click="navigate" phx-value-path="..">..</a>
+    </div>
+  <% end %>
+  <%= for {:folder, foldername} <- files do %>
+    <div class="file-item">
+      <img class="file-item-image" src="/images/folder.png"/>
+      <a class="file-item-name bold" phx-click="navigate" phx-value-path={foldername}><%= foldername %></a>
+    </div>
+  <% end %>
+  <%= for {:file, filename} <- files do %>
+    <div class="file-item">
+      <img class="file-item-image" src="/images/file.png"/>
+      <a class="file-item-name file"><%= filename %></a>
+    </div>
+  <% end %>
+</section>
+-->
