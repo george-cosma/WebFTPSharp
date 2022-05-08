@@ -11,9 +11,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\js\path.js" />
-		<TypeScriptCompile Include="wwwroot\js\filebrowser.js" />
-		<TypeScriptCompile Include="wwwroot\js\site.js" />
+    <Content Include="wwwroot\scripts\filebrowser.ts" />
+    <Content Include="wwwroot\scripts\path.ts" />
+    <Content Include="wwwroot\scripts\site.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.6.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

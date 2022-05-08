@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6",
+    "baseUrl": ".",
+    "outDir": "wwwroot/js",
+    "moduleResolution": "node",
+    "paths": {
+      "@microsoft/signalr": [ "node_modules/@microsoft/signalr/dist/browser/signalr.js" ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "wwwroot/scripts/**/*"
+  ]
+}
