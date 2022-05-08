@@ -4,16 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\js\filebrowser.js" />
-    <Content Remove="wwwroot\js\path.js" />
-    <Content Remove="wwwroot\js\site.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\js\path.js" />
-		<TypeScriptCompile Include="wwwroot\js\filebrowser.js" />
-		<TypeScriptCompile Include="wwwroot\js\site.js" />
-  </ItemGroup>
-
 </Project>
