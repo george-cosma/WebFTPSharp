@@ -1,11 +1,8 @@
 import Path from "./path.js";
 let path = new Path();
-
-console.log(window.signalR);
 //const connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
 const connection = new window.signalR.HubConnectionBuilder()
     .withUrl("/api/hubs/filebrowser")
-    .configureLogging(signalR.LogLevel.Information)
     .build();
 connection.start().catch(err => console.error(err.toString()));
 /*

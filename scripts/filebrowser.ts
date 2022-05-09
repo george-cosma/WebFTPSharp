@@ -1,15 +1,9 @@
 ﻿import Path from "./path.js"
-import * as signalR from "../lib/microsoft/signalr/dist/browser/signalr.js";
-//const signalR = require("@microsoft/signalr");
-
 let path: Path = new Path();
 
-console.log(signalR);
-
 //const connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
-const connection = new signalR.HubConnectionBuilder()
+const connection = new (<any>window).signalR.HubConnectionBuilder()
                     .withUrl("/api/hubs/filebrowser")
-                    .configureLogging(signalR.LogLevel.Information)
                     .build();
 connection.start().catch(err => console.error(err.toString()));
 

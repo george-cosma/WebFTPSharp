@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\scripts\filebrowser.ts" />
-    <Content Include="wwwroot\scripts\path.ts" />
-    <Content Include="wwwroot\scripts\site.ts" />
+    <Content Include="scripts\filebrowser.ts" />
+    <Content Include="scripts\path.ts" />
+    <Content Include="scripts\site.ts" />
   </ItemGroup>
 
   <ItemGroup>
