@@ -4,6 +4,8 @@ import * as signalR from "../lib/microsoft/signalr/dist/browser/signalr.js";
 
 let path: Path = new Path();
 
+console.log(signalR);
+
 //const connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
 const connection = new signalR.HubConnectionBuilder()
                     .withUrl("/api/hubs/filebrowser")
