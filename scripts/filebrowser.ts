@@ -1,9 +1,14 @@
-﻿import Path from "./path.js"
+﻿import Path from "./models/path"
+let path: Path = new Path();
 
-let path = new Path();
+const signalR = require("@microsoft/signalr");
 
-let connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
-connection.start();
+//import * as signalR from "@microsoft/signalr";
+//const connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
+const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("/api/hubs/filebrowser")
+                    .build();
+connection.start().catch(err => console.error(err.toString()));
 
 /*
 

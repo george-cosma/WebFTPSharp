@@ -1,9 +1,11 @@
 ﻿export default class Path {
+	path: string[]
+
 	constructor() {
 		this.path = [];
 	}
 
-	navigate(folder) {
+	navigate(folder: string): void {
 		if (folder === "..") {
 			this.navigate_backwards();
 		}
@@ -12,11 +14,11 @@
 		}
 	}
 
-	navigate_backwards() {
+	navigate_backwards(): void {
 		this.path.pop();
 	}
 
-	is_valid_pathname(name) {
+	is_valid_pathname(name: string): boolean {
 		if (name.includes("<")) return false;
 		if (name.includes(">")) return false;
 		if (name.includes(":")) return false;
