@@ -1,1 +1,1 @@
-{"version":3,"file":"site.js","sourceRoot":"","sources":["../../scripts/site.ts"],"names":[],"mappings":"AAAA,2GAA2G;AAC3G,kFAAkF;AAElF,8BAA8B"}
+{"version":3,"file":"site.js","mappings":";;;;;AAAA,2GAA2G;AAC3G,kFAAkF;AAElF,8BAA8B","sources":["webpack://webftpsharp/./scripts/site.ts"],"sourcesContent":["// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\r\n// for details on configuring this project to bundle and minify static web assets.\r\n\r\n// Write your Javascript code.\r\n"],"names":[],"sourceRoot":""}

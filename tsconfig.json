@@ -4,15 +4,7 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "es6",
-    "baseUrl": ".",
-    "outDir": "wwwroot/js"
+    "target": "es6"
   },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ],
-  "include": [
-    "scripts/**/*"
-  ]
+  "exclude": ["wwwroot", "node_modules"]
 }

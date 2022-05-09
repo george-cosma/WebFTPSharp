@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Content Include="scripts\filebrowser.ts" />
-    <Content Include="scripts\path.ts" />
+    <Content Include="scripts\models\path.ts" />
     <Content Include="scripts\site.ts" />
   </ItemGroup>
 
