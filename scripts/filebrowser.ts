@@ -3,8 +3,6 @@ let path: Path = new Path();
 
 const signalR = require("@microsoft/signalr");
 
-//import * as signalR from "@microsoft/signalr";
-//const connection = new signalR.HubConnectionBuilder().withUrl("/api/hubs/filebrowser").build();
 const connection = new signalR.HubConnectionBuilder()
                     .withUrl("/api/hubs/filebrowser")
                     .build();

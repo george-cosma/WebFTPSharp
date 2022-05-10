@@ -2,9 +2,26 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    
 }
 <script defer type="module" src="~/js/filebrowser.js"></script>
+
+
+<div class="container my-3 p-3 pb-0 align-items-center text-center border shadow">
+    <h1 class="display-5">WebFTP</h1>
+    <h3 class="lead">Running on @Model.IP</h3>
+</div>
+
+<div class="contianer-fluid small-margin-x">
+    <div class="row">
+        <div class="col">
+            Download
+        </div>
+        <div class="col">
+            <p class="text-right">Upload</p>
+        </div>
+    </div>
+</div>
+
 <!--
 <meta name="path" content={path_to_string(path)}>
 <section class="container">
