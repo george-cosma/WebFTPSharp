@@ -12,6 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="scripts\components\file.ts" />
+    <None Remove="scripts\components\folder.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="scripts\filebrowser.ts" />
     <Content Include="scripts\models\path.ts" />
     <Content Include="scripts\site.ts" />
@@ -19,6 +24,11 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="scripts\components\file.ts" />
+    <TypeScriptCompile Include="scripts\components\folder.ts" />
   </ItemGroup>
 
 </Project>

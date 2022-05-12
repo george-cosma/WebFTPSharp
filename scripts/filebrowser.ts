@@ -1,5 +1,8 @@
 ﻿import Path from "./models/path"
+
 let path: Path = new Path();
+
+
 
 const signalR = require("@microsoft/signalr");
 
@@ -7,6 +10,8 @@ const connection = new signalR.HubConnectionBuilder()
                     .withUrl("/api/hubs/filebrowser")
                     .build();
 connection.start().catch(err => console.error(err.toString()));
+
+
 
 /*
 
