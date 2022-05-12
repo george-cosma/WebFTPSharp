@@ -1,11 +1,12 @@
 ﻿import { html, css, LitElement } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, queryAsync } from 'lit/decorators.js';
 
 @customElement('folder-el')
 export class FolderElement extends LitElement {
     static styles = css`
         .folder-item{
             display: flex;
+            margin: 2px 0;
         }
 
         .folder-item-image {
@@ -31,8 +32,8 @@ export class FolderElement extends LitElement {
     @property()
     folder_name = '';
 
-    @query('.folder-item')
-    body;
+    @queryAsync('.folder-item')
+    getBody: Promise<HTMLElement>;
 
 
     render() {
@@ -46,7 +47,7 @@ export class FolderElement extends LitElement {
 }
 
 declare global {
-    interface FolderElementTagNameMap {
+    interface HTMLElementTagNameMap {
         "folder-el": FolderElement;
     }
 }

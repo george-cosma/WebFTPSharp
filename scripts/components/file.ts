@@ -1,11 +1,12 @@
 ﻿import { html, css, LitElement } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, queryAsync } from 'lit/decorators.js';
 
 @customElement('file-el')
 export class FileElement extends LitElement {
     static styles = css`
         .file-item {
             display: flex;
+            margin: 2px 0;
         }
 
         .file-item-image {
@@ -33,8 +34,8 @@ export class FileElement extends LitElement {
     @property()
     file_id = '';
 
-    @query('.file-item')
-    body;
+    @queryAsync('.file-item')
+    getBody: Promise<HTMLElement>;
 
 
     render() {
@@ -48,7 +49,7 @@ export class FileElement extends LitElement {
 }
 
 declare global {
-    interface FileElementTagNameMap {
+    interface HTMLElementTagNameMap {
         "file-el": FileElement;
     }
 }

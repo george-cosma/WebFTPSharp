@@ -14,6 +14,8 @@
   <ItemGroup>
     <None Remove="scripts\components\file.ts" />
     <None Remove="scripts\components\folder.ts" />
+    <None Remove="scripts\models\navigation_item.ts" />
+    <None Remove="scripts\models\navigation_item_type.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +31,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="scripts\components\file.ts" />
     <TypeScriptCompile Include="scripts\components\folder.ts" />
+    <TypeScriptCompile Include="scripts\models\navigation_item.ts" />
+    <TypeScriptCompile Include="scripts\models\navigation_item_type.ts" />
   </ItemGroup>
 
 </Project>

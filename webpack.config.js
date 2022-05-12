@@ -9,6 +9,8 @@ module.exports = {
         'site': './scripts/site.ts',
         'filebrowser': './scripts/filebrowser.ts',
         'models/path': './scripts/models/path.ts',
+        'models/navigation_item': './scripts/models/navigation_item.ts',
+        'models/navigation_item_type': './scripts/models/navigation_item_type.ts',
         'components': glob.sync("./scripts/components/**/*.ts")
     },
     output: {
