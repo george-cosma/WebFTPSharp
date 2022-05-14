@@ -2,7 +2,7 @@
 import Path from "./models/path"
 import NavigationItem from "./models/navigation_item"
 import NavigationItemType from "./models/navigation_item_type"
-
+const axios = require("axios");
 
 
 
@@ -15,6 +15,7 @@ const connection = new signalR.HubConnectionBuilder()
 
 
 const fileBrowser = document.getElementById("file-browser");
+const downloadBarArea = document.getElementById("download-bar-area");
 
 connection.on("FilesUpdated", function () {
 	requestFiles(path);
@@ -61,14 +62,30 @@ connection.on("RequestFilesResponse", function (message: Array<NavigationItem>) 
 			file.file_id = item.id;
 
 			file.getBody.then(el => el.addEventListener("click", function (event) {
-				fetch('/api/download', {
-					method: 'post',
+
+				let dlBar = document.createElement("download-bar");
+				downloadBarArea.appendChild(dlBar);
+
+				axios.request({
+					method: "post",
+					url: "/api/download",
 					headers: {
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify({ id: file.file_id })
+					data: JSON.stringify({ id: file.file_id }),
+					onDownloadProgress: (p) => {
+						// https://stackoverflow.com/a/63067578
+						const total = p.total;
+						const current = p.loaded;
+						let percentCompleted = Math.floor(current / total * 100)
+
+						dlBar.percentage = percentCompleted;
+					},
+					responseType: "blob"
 				})
-				.then(res => res.blob())
+				.then(res => {
+					return res.data;
+				})
 				.then(blob => {
 					// TODO: Remove this jank
 					var url = window.URL.createObjectURL(blob);
@@ -78,6 +95,9 @@ connection.on("RequestFilesResponse", function (message: Array<NavigationItem>) 
 					document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
 					a.click();
 					a.remove();  //afterwards we remove the element again 
+
+
+					dlBar.remove();
 				});
 
 				event.preventDefault();

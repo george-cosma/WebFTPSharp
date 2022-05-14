@@ -34,7 +34,10 @@ namespace WebFTPSharp.Pages.api
 				byte[]? bytes = await fileProvider.GetFileAsync(data.Id);
 				if (bytes != null)
 				{
+					// Headers must be set before writing to body.
+					Response.Headers.ContentLength = bytes.Length;
 					await Response.Body.WriteAsync(bytes, 0, bytes.Length);
+					
 					return new EmptyResult();
 				}
 			}

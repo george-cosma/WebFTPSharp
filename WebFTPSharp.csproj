@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="scripts\components\download-bar.ts" />
     <None Remove="scripts\components\file.ts" />
     <None Remove="scripts\components\folder.ts" />
     <None Remove="scripts\models\navigation_item.ts" />
@@ -33,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="scripts\components\download-bar.ts" />
     <TypeScriptCompile Include="scripts\components\file.ts" />
     <TypeScriptCompile Include="scripts\components\folder.ts" />
     <TypeScriptCompile Include="scripts\models\navigation_item.ts" />
