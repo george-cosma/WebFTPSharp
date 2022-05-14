@@ -55,6 +55,8 @@ namespace WebFTPSharp
 			// Why Singleton?
 			// https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences
 			services.AddSingleton<IFileProvider, LocalFileProvider>( _ => new LocalFileProvider(serverConfig.ServerFolderPath));
+
+			// TODO: Add CORS [https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0]
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +81,8 @@ namespace WebFTPSharp
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapRazorPages();
+				// Map API controlleres
+				endpoints.MapControllers();
 				endpoints.MapHub<FileBrowserHub>("/api/hubs/filebrowser");
 			});
 

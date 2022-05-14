@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace WebFTPSharp.Hubs
 	public class FileBrowserHub : Hub
     {
 		private readonly IFileProvider fileProvider;
+		private readonly ILogger<FileBrowserHub> _logger;
 
-		public FileBrowserHub(IFileProvider fileProvider)
+		public FileBrowserHub(ILogger<FileBrowserHub> logger, IFileProvider fileProvider)
 		{
 			this.fileProvider = fileProvider;
+			this._logger = logger;
 		}
 
 		/// <summary>
@@ -39,9 +42,9 @@ namespace WebFTPSharp.Hubs
 		private List<NavigationItem> GetFiles(List<string> path)
 		{
 			if (path.Count != 0)
-				Debug.Print("Request: " + string.Join('/', path));
+				_logger.LogInformation("Received request for files from path: " + string.Join('/', path));
 			else
-				Debug.Print("Files request for root");
+				_logger.LogInformation("Received request for files from path: [root]");
 
 			return fileProvider.GetNavigationItems(path);
 		}

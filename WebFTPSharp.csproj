@@ -29,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="scripts\components\file.ts" />
     <TypeScriptCompile Include="scripts\components\folder.ts" />
     <TypeScriptCompile Include="scripts\models\navigation_item.ts" />

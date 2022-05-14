@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using WebFTPSharp.Models;
 
 namespace WebFTPSharp.Services.FileProvider
@@ -135,6 +136,26 @@ namespace WebFTPSharp.Services.FileProvider
 
 		public byte[]? GetFile(string id)
 		{
+			string? filepath = GetFilePath(id);
+			if (String.IsNullOrWhiteSpace(filepath)) return null;
+
+			// TODO: add read-lock on file 
+			// TODO: return a stream instead? It might use too much RAM for large files...
+			return File.ReadAllBytes(filepath);
+		}
+
+		public async Task<byte[]?> GetFileAsync(string id)
+		{
+			string? filepath = GetFilePath(id);
+			if (String.IsNullOrWhiteSpace(filepath)) return null;
+
+			// TODO: add read-lock on file 
+			// TODO: return a stream instead? It might use too much RAM for large files...
+			return await File.ReadAllBytesAsync(filepath);
+		}
+
+		private string? GetFilePath(string id)
+		{
 			string? filepath = String.Empty;
 
 			// Get the filepath of the desired file
@@ -151,11 +172,7 @@ namespace WebFTPSharp.Services.FileProvider
 				updateLock.ExitReadLock();
 			}
 
-			if (filepath == null) return null;
-
-			// TODO: add read-lock on file 
-			// TODO: return a stream instead? It might use too much RAM for large files...
-			return File.ReadAllBytes(filepath);
+			return filepath;
 		}
 
 		// https://stackoverflow.com/a/6839784
