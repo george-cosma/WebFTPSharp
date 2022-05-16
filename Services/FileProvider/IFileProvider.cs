@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using WebFTPSharp.Models;
 
@@ -10,5 +11,6 @@ namespace WebFTPSharp.Services.FileProvider
 		public void UpdateFiles();
 		public byte[]? GetFile(string id);
 		public Task<byte[]?> GetFileAsync(string id);
+		public Stream? GetFileStream(string id);
 	}
 }

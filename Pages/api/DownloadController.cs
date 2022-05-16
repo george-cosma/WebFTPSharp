@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WebFTPSharp.Services.FileProvider;
@@ -25,20 +26,16 @@ namespace WebFTPSharp.Pages.api
 
 		// POST api/download
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] DownloadRequestModel data)
+		public ActionResult Post([FromBody] DownloadRequestModel data)
 		{
 			_logger.LogInformation($"Someone is downloading file with id '${data.Id}'");
 
 			if(data.Id != null)
 			{
-				byte[]? bytes = await fileProvider.GetFileAsync(data.Id);
-				if (bytes != null)
+				Stream? fileStream = fileProvider.GetFileStream(data.Id);
+				if (fileStream != null)
 				{
-					// Headers must be set before writing to body.
-					Response.Headers.ContentLength = bytes.Length;
-					await Response.Body.WriteAsync(bytes, 0, bytes.Length);
-					
-					return new EmptyResult();
+					return File(fileStream, "application/octet-stream");
 				}
 			}
 			return BadRequest("You must provide a valid ID or the file no longer exists.");

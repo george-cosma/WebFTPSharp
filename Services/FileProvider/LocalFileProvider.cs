@@ -154,6 +154,17 @@ namespace WebFTPSharp.Services.FileProvider
 			return await File.ReadAllBytesAsync(filepath);
 		}
 
+		public Stream? GetFileStream(string id)
+		{
+			string? filepath = GetFilePath(id);
+			if (String.IsNullOrWhiteSpace(filepath)) return null;
+
+			// TODO: add read-lock on file 
+			// TODO: return a stream instead? It might use too much RAM for large files...
+			return File.OpenRead(filepath);
+		}
+
+
 		private string? GetFilePath(string id)
 		{
 			string? filepath = String.Empty;
