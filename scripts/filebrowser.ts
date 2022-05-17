@@ -64,6 +64,7 @@ connection.on("RequestFilesResponse", function (message: Array<NavigationItem>) 
 			file.getBody.then(el => el.addEventListener("click", function (event) {
 
 				let dlBar = document.createElement("download-bar");
+				dlBar.filename = file.file_name;
 				downloadBarArea.appendChild(dlBar);
 
 				axios.request({
@@ -77,9 +78,8 @@ connection.on("RequestFilesResponse", function (message: Array<NavigationItem>) 
 						// https://stackoverflow.com/a/63067578
 						const total = p.total;
 						const current = p.loaded;
-						let percentCompleted = Math.floor(current / total * 100)
-
-						dlBar.percentage = percentCompleted;
+						
+						dlBar.updateProgress(current, total);
 					},
 					responseType: "blob"
 				})

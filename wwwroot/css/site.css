@@ -105,3 +105,44 @@ body {
         margin-right: 12vw;
     }
 }
+
+/* download/upload bar */
+
+.bar-holder {
+    margin: 5px;
+}
+
+.bar-percent-text {
+    padding: 0;
+    margin: 0px 0px 0px 20px;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.card {
+    border-radius: 0.75rem;
+    border-top: 0;
+    border-bottom: 3px solid rgb(0 0 0 / 38%)
+}
+
+.card-img-top {
+    background: #ff9780;
+    padding: 0;
+    margin: 0;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.bar-file-text {
+    padding: 0;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    border-bottom: 1px solid black;
+}
+
+.bar-stats-text {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    min-width: 100px;
+}

@@ -32,6 +32,8 @@ namespace WebFTPSharp.Pages.api
 
 			if(data.Id != null)
 			{
+				// TODO: test performance for file stream on small files, and determine if read-to-memory > write to request is faster
+				// than using a file stream.
 				Stream? fileStream = fileProvider.GetFileStream(data.Id);
 				if (fileStream != null)
 				{

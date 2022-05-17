@@ -18,7 +18,6 @@ namespace WebFTPSharp.Pages
 		public IndexModel(ILogger<IndexModel> logger)
 		{
 			_logger = logger;
-			logger.LogDebug("test");
 
 			// GET IP
 			try
