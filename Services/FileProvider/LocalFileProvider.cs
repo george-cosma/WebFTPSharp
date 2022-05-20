@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebFTPSharp.Models;
+using static WebFTPSharp.Services.FileProvider.IFileProvider;
 
 namespace WebFTPSharp.Services.FileProvider
 {
@@ -13,10 +14,21 @@ namespace WebFTPSharp.Services.FileProvider
 	{
 		private string basePath;
 		
+		/// <summary>
+		/// A dictionary which maps a file's hash to its filepath
+		/// HASH -> FILEPATH
+		/// </summary>
 		private Dictionary<string, string> fileTable = new Dictionary<string, string>();
+		/// <summary>
+		/// A dictionary which maps a file's filepath to its hash
+		/// FILEPATH -> HASH
+		/// </summary>
 		private Dictionary<string, string> hashTable = new Dictionary<string, string>();
 
 		private ReaderWriterLockSlim updateLock = new ReaderWriterLockSlim();
+
+		// Events
+		public event FileUploadedEventHandler? FileUploaded;
 
 		public LocalFileProvider(string basePath)
 		{
@@ -24,6 +36,7 @@ namespace WebFTPSharp.Services.FileProvider
 			UpdateFiles();
 		}
 
+		// Update ALL File hashes
 		public void UpdateFiles()
 		{
 
@@ -45,7 +58,6 @@ namespace WebFTPSharp.Services.FileProvider
 				updateLock.ExitWriteLock();
 			}
 		}
-
 		private void UpdateFiles(string path)
 		{
 			foreach(string mixedFilePath in Directory.GetFiles(path))
@@ -62,6 +74,8 @@ namespace WebFTPSharp.Services.FileProvider
 			}
 		}
 
+
+		// Get navigation items
 		public List<NavigationItem> GetNavigationItems(List<string> path)
 		{
 			List<NavigationItem> result = new List<NavigationItem>();
@@ -69,20 +83,7 @@ namespace WebFTPSharp.Services.FileProvider
 			updateLock.EnterReadLock();
 			try
 			{
-				// Verify Path
-				if (!IsLooselyValidPath(path))
-					throw new InvalidPathException();
-
-				string finalPath = basePath;
-				foreach (string pathItem in path)
-				{
-					finalPath = Path.GetFullPath(pathItem, finalPath);
-				}
-
-				finalPath = Path.GetFullPath(finalPath);
-
-				if (!Path.IsPathFullyQualified(finalPath) || !Directory.Exists(finalPath) || !IsSubdirectory(basePath, finalPath))
-					throw new InvalidPathException();
+				string finalPath = ConstructAndVerifyPath(path);
 
 				// Construct Result
 				foreach (string mixedDirectoryPath in Directory.GetDirectories(finalPath))
@@ -108,7 +109,25 @@ namespace WebFTPSharp.Services.FileProvider
 
 			return result;
 		}
+		private string ConstructAndVerifyPath(List<string> path)
+		{
+			// Verify Path
+			if (!IsLooselyValidPath(path))
+				throw new InvalidPathException();
 
+			string finalPath = basePath;
+			foreach (string pathItem in path)
+			{
+				finalPath = Path.GetFullPath(pathItem, finalPath);
+			}
+
+			finalPath = Path.GetFullPath(finalPath);
+
+			if (!Path.IsPathFullyQualified(finalPath) || !Directory.Exists(finalPath) || !IsSubdirectory(basePath, finalPath))
+				throw new InvalidPathException();
+
+			return NormalizePath(finalPath);
+		}
 		private bool IsSubdirectory(string basePath, string finalPath)
 		{
 			string baseFullPath = Path.GetFullPath(basePath);
@@ -116,7 +135,6 @@ namespace WebFTPSharp.Services.FileProvider
 
 			return finalFullPath.Contains(baseFullPath);
 		}
-
 		/// <summary>
 		/// Checks if the path array is loosely valid. This function checks that each path segment is valid, 
 		/// but does not check that the whole merged path is valid.
@@ -134,6 +152,7 @@ namespace WebFTPSharp.Services.FileProvider
 			return true;
 		}
 
+		// Get a file
 		public byte[]? GetFile(string id)
 		{
 			string? filepath = GetFilePath(id);
@@ -143,7 +162,6 @@ namespace WebFTPSharp.Services.FileProvider
 			// TODO: return a stream instead? It might use too much RAM for large files...
 			return File.ReadAllBytes(filepath);
 		}
-
 		public async Task<byte[]?> GetFileAsync(string id)
 		{
 			string? filepath = GetFilePath(id);
@@ -153,7 +171,6 @@ namespace WebFTPSharp.Services.FileProvider
 			// TODO: return a stream instead? It might use too much RAM for large files...
 			return await File.ReadAllBytesAsync(filepath);
 		}
-
 		public Stream? GetFileStream(string id)
 		{
 			string? filepath = GetFilePath(id);
@@ -163,8 +180,6 @@ namespace WebFTPSharp.Services.FileProvider
 			// TODO: return a stream instead? It might use too much RAM for large files...
 			return File.OpenRead(filepath);
 		}
-
-
 		private string? GetFilePath(string id)
 		{
 			string? filepath = String.Empty;
@@ -186,9 +201,33 @@ namespace WebFTPSharp.Services.FileProvider
 			return filepath;
 		}
 
-		// https://stackoverflow.com/a/6839784
+		// Upload a file
+		public async Task<string> UploadFileAsync(Stream requestBodyStream, List<string> path, string filename)
+		{
+			string finalFilePath = NormalizePath(ConstructAndVerifyPath(path) + "/" + filename);
+
+			if (File.Exists(finalFilePath))
+				throw new ArgumentException($"File already exists at {finalFilePath}!", nameof(filename));
+			
+			// This will throw an exception if the filename is invalid
+			var fs = File.OpenWrite(finalFilePath);
+			await requestBodyStream.CopyToAsync(fs);
+			await fs.DisposeAsync();
+
+			// TODO: create a custom read/write lock, so that we don't need to refresh the whole file/hash tables
+			UpdateFiles();
+
+			// TODO: Create a background thread to handle the event handlers, so that the client doesn't need to wait for the event handlers to finish
+			// Note: this does not have an impact if all listeners are async...
+			FileUploaded?.Invoke(hashTable[finalFilePath]);
+
+			return hashTable[finalFilePath];
+		}
+
+		// Auxiliary Methods
 		private static string SHA256Hash(string text)
 		{
+			// https://stackoverflow.com/a/6839784
 			if (String.IsNullOrEmpty(text))
 				return String.Empty;
 
@@ -208,7 +247,5 @@ namespace WebFTPSharp.Services.FileProvider
 		{
 			return Path.GetFullPath(mixedPath);
 		}
-
-		
 	}
 }

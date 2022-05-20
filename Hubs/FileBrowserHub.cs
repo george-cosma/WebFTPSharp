@@ -17,6 +17,13 @@ namespace WebFTPSharp.Hubs
 		{
 			this.fileProvider = fileProvider;
 			this._logger = logger;
+
+			fileProvider.FileUploaded += FileProvider_FileUploaded;
+		}
+
+		private async void FileProvider_FileUploaded(string fileHash)
+		{
+			await Clients.All.SendAsync("FilesUpdated");
 		}
 
 		/// <summary>
@@ -27,16 +34,6 @@ namespace WebFTPSharp.Hubs
 		{
 			// Possible race condition with the brodcast command? Low-impact bug if true.
 			await Clients.Caller.SendAsync("RequestFilesResponse", GetFiles(path));
-		}
-
-		/// <summary>
-		/// Private Brodcast command, can only be used by the Hub to announce that a new file was uploaded, deleted and so on.
-		/// </summary>
-		/// <returns></returns>
-		private async Task UpdateFiles()
-		{
-			fileProvider.UpdateFiles();
-			await Clients.All.SendAsync("FilesUpdated");
 		}
 
 		private List<NavigationItem> GetFiles(List<string> path)
