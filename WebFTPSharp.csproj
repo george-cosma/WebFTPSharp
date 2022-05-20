@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\filebrowser.js" />
     <Content Remove="wwwroot\js\path.js" />
-    <Content Remove="wwwroot\js\site.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
@@ -44,18 +38,23 @@
   <ItemGroup>
     <Content Update="config\serverconfig.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
     <Content Update="libman.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
     <Content Update="package-lock.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
     <Content Update="package.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
     <Content Update="tsconfig.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
