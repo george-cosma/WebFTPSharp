@@ -1,78 +1,38 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+	ViewData["Title"] = "Home page";
 }
 <script src="~/js/components.js"></script>
 <script defer type="module" src="~/js/filebrowser.js"></script>
 
 
 <div class="container my-3 p-3 pb-0 align-items-center text-center border shadow">
-    <h1 class="display-5">WebFTP</h1>
-    <h3 class="lead">Running on @Model.IP</h3>
+	<h1 class="display-5">WebFTP</h1>
+	<h3 class="lead">Running on @Model.IP</h3>
 </div>
 
 <div class="contianer-fluid small-margin-x">
-    <div class="row">
-        <div class="col">
-            <h4 class="text-left">Server Files</h4>
-            <div id="file-browser"></div>
-            <div id="download-bar-area"></div>
-            
-        </div>
-        <div class="col">
-            <p class="text-right">Upload</p>
-        </div>
-    </div>
-</div>
+	<div class="row">
+		<div class="col">
+			<h4 class="text-left">Server Files</h4>
+			<div id="file-browser"></div>
+			<div id="download-bar-area"></div>
 
-<!--
-<template id="folder-template">
-    <div class="folder-item">
-        <img class="folder-item-image" src="/images/folder.png"/>
-        <a class="folder-item-name" phx-click="navigate" phx-value-path="..">..</a>
-    </div>
-</template>
--->
-<!--
-<meta name="path" content={path_to_string(path)}>
-<section class="container">
-  <section class="phx-hero">
-    <h1>WebFTP</h1>
-    <h3>Running on <b><%= getServerURL() %></b></h3>
-  </section>
-</section>
-<div class="form-group">
-  <label>Upload</label>
-  <input class="form-control" id="user_file" type="file">
-  <input class="form-control" id="submit_file" type="submit">
+		</div>
+		<div class="col">
+			<form>
+				<div class="form-group">
+					<label for="input-file" class="label-file">Upload a File</label>
+					<input type="file" class="form-control-file" id="input-file">
+				</div>
+				<div class="form-group">
+					<label for="input-filename" class="label-filename">Filename</label>
+					<input type="text" class="form-control input-filename" id="input-filename" disabled>
+				</div>
+				<button type="submit" id="input-submit" class="btn btn-primary">Upload</button>
+			</form>
+			<div id="upload-bar-area"></div>
+		</div>
+	</div>
 </div>
-<div id="progress-bar-container">
-  <div class="progress-bar">
-    <div class="progress-bar-fill"></div>
-    <p class="progress-bar-text-percent">0%</p>
-  </div>
-</div>
-
-<section style="margin:0 2vw">
-  <h3>Server Files</h3>
-  <%= if path != [] do %>
-  <div class="file-item">
-      <img class="file-item-image" src="/images/folder.png"/>
-      <a class="file-item-name bold" phx-click="navigate" phx-value-path="..">..</a>
-    </div>
-  <% end %>
-  <%= for {:folder, foldername} <- files do %>
-    <div class="file-item">
-      <img class="file-item-image" src="/images/folder.png"/>
-      <a class="file-item-name bold" phx-click="navigate" phx-value-path={foldername}><%= foldername %></a>
-    </div>
-  <% end %>
-  <%= for {:file, filename} <- files do %>
-    <div class="file-item">
-      <img class="file-item-image" src="/images/file.png"/>
-      <a class="file-item-name file"><%= filename %></a>
-    </div>
-  <% end %>
-</section>
--->

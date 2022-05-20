@@ -23,24 +23,31 @@ namespace WebFTPSharp.Pages.api
 
 		// POST api/download
 		[HttpPost]
-		public async Task<ActionResult> Post([FromBody] UploadRequestModel data)
+		[RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+		[DisableRequestSizeLimit]
+		public async Task<ActionResult> Post([FromForm] UploadRequestModel data)
 		{
-			if (data.FileName != null && data.Path != null)
+			if(data.Path == null)
 			{
-				_logger.LogInformation($"Someone is uploading a file with name '${data.FileName}' in ${string.Join('/', data.Path)}");
+				data.Path = new List<string>();
+			}
 
-				string id = await fileProvider.UploadFileAsync(Request.Body, data.Path, data.FileName);
+			if (data.FileName != null && Request.Form.Files.Count == 1)
+			{
+				_logger.LogInformation($"Someone is uploading a file with name '{data.FileName}' in {string.Join('/', data.Path)}");
+
+				string id = await fileProvider.UploadFileAsync(Request.Form.Files[0].OpenReadStream(), data.Path, data.FileName);
 
 				return Ok(id);
 			}
-			return BadRequest("You must provide a valid ID or the file no longer exists.");
+			return BadRequest();
 		}
 
 		public class UploadRequestModel
 		{
 			[Required]
 			public string? FileName { get; set; }
-			[Required]
+
 			public List<string>? Path { get; set; }
 
 		}

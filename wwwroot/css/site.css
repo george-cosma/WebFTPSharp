@@ -146,3 +146,17 @@ body {
     font-weight: 400;
     min-width: 100px;
 }
+
+/* Upload Section */
+
+.label-file {
+    font-size: 1.3rem;
+}
+
+.label-filenmae {
+    font-size: 1.2rem;
+}
+
+.input-filename {
+    max-width: 500px;
+}

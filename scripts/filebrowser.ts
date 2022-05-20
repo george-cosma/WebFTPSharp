@@ -16,7 +16,13 @@ const connection = new signalR.HubConnectionBuilder()
 
 const fileBrowser = document.getElementById("file-browser");
 const downloadBarArea = document.getElementById("download-bar-area");
+const uploadBarArea = document.getElementById("upload-bar-area");
 
+const fileNameInput = document.getElementById("input-filename") as HTMLInputElement;
+const fileInput = document.getElementById("input-file") as HTMLInputElement;
+const uploadSubmitButton = document.getElementById("input-submit");
+
+// Download
 connection.on("FilesUpdated", function () {
 	requestFiles(path);
 });
@@ -107,12 +113,73 @@ connection.on("RequestFilesResponse", function (message: Array<NavigationItem>) 
 	});
 });
 
+// Refresh Files
 function requestFiles(reqPath: Path): void {
 	connection.invoke("RequestFiles", path.path)
 		.catch(function (err) {
 			return console.error(err.toString());
 		});
 }
+
+// Upload
+fileInput.addEventListener("change", (e) => {
+	if (fileInput.files.length > 0 && fileInput.files[0].name != null) {
+		fileNameInput.disabled = false;
+		fileNameInput.value = fileInput.files[0].name;
+	} else {
+		fileNameInput.disabled = true;
+		fileNameInput.value = null;
+	}
+})
+
+uploadSubmitButton.addEventListener("click", (e) => {
+	if (fileInput.files.length > 0 && fileInput.files[0].name != null && fileNameInput.value != null && fileNameInput.value != '') {
+		let filename = fileNameInput.value;
+		let file = fileInput.files[0];
+
+		let uploadBar = document.createElement("upload-bar");
+		uploadBar.filename = filename;
+		uploadBarArea.appendChild(uploadBar);
+
+		let formData = new FormData();
+
+		for (let i = 0; i < path.path.length; i++) {
+			formData.append(`path[${i}]`, path.path[i]);
+		}
+
+		formData.append("filename", filename)
+		formData.append("file", file);
+
+		axios.request({
+			method: "post",
+			url: "/api/upload",
+			headers: {
+				'Content-Type': 'multipart/form-data; boundary'
+			},
+			data: formData,
+			onUploadProgress: (p) => {
+				const total = p.total;
+				const current = p.loaded;
+
+				uploadBar.updateProgress(current, total);
+			}
+		})
+		.catch(e => {
+			uploadBar.remove();
+		})
+		.then(res => {
+			uploadBar.remove();
+		});
+
+		fileInput.value = null;
+		fileNameInput.value = null;
+		fileNameInput.disabled = true;
+	}
+
+
+
+	e.preventDefault();
+})
 
 connection.start()
 	.catch(err => console.error(err.toString()))

@@ -10,20 +10,27 @@ namespace WebFTPSharp.Hubs
 {
 	public class FileBrowserHub : Hub
     {
-		private readonly IFileProvider fileProvider;
+		private readonly IFileProvider _fileProvider;
 		private readonly ILogger<FileBrowserHub> _logger;
+		private readonly IHubContext<FileBrowserHub> _hubContext;
 
-		public FileBrowserHub(ILogger<FileBrowserHub> logger, IFileProvider fileProvider)
+		public FileBrowserHub(ILogger<FileBrowserHub> logger, IFileProvider fileProvider, IHubContext<FileBrowserHub> hubContext)
 		{
-			this.fileProvider = fileProvider;
+			this._fileProvider = fileProvider;
 			this._logger = logger;
+			this._hubContext = hubContext;
 
 			fileProvider.FileUploaded += FileProvider_FileUploaded;
 		}
 
+		~FileBrowserHub()
+		{
+			_fileProvider.FileUploaded -= FileProvider_FileUploaded;
+		}
+
 		private async void FileProvider_FileUploaded(string fileHash)
 		{
-			await Clients.All.SendAsync("FilesUpdated");
+			await _hubContext.Clients.All.SendAsync("FilesUpdated");
 		}
 
 		/// <summary>
@@ -43,7 +50,7 @@ namespace WebFTPSharp.Hubs
 			else
 				_logger.LogInformation("Received request for files from path: [root]");
 
-			return fileProvider.GetNavigationItems(path);
+			return _fileProvider.GetNavigationItems(path);
 		}
 	}
 }

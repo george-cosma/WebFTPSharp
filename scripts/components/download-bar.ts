@@ -8,17 +8,17 @@ export class DownloadBarElement extends LitElement {
 	public filename: string = "File.txt";
 
 	@property()
-	private percentage = 0;
+	protected percentage = 0;
 
 	@property()
-	private downloaded = "0 KB";
+	protected downloaded = "0 KB";
 	@property()
-	private total = "0 KB";
+	protected total = "0 KB";
 
 	@property()
-	private speed = "0 KB/s";
+	protected speed = "0 KB/s";
 	@property()
-	private eta = "0 seconds";
+	protected eta = "0 seconds";
 
 	private totalSet = false;
 
@@ -116,7 +116,7 @@ export class DownloadBarElement extends LitElement {
 	<!-- Bar -->
 	<div class="d-flex align-items-center p-1">
 		<div class="progress flex-fill align-content-center">
-			<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${this.percentage}%"></div>
+			<div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: ${this.percentage}%"></div>
 		</div>
 		<p class="bar-percent-text align-content-center">${this.percentage}%</p>
 	</div>
@@ -130,8 +130,52 @@ export class DownloadBarElement extends LitElement {
 	}
 }
 
+
+@customElement('upload-bar')
+export class UploadBarElement extends DownloadBarElement {
+	render() {
+		return html`
+<div class="bar-holder card m-2">
+	<div class="card-img-top p-1">
+		<p class="bar-file-text">${this.filename}</p>
+		<div class="mx-2 d-flex justify-content-between align-items-center">
+			<div class="d-flex">
+				<div class="pr-2">
+					<p class="bar-stats-text text-right">Downloaded:</p>
+					<p class="bar-stats-text text-right">Total:</p>
+				</div>
+				<div>
+					<p class="bar-stats-text">${this.downloaded}</p>
+					<p class="bar-stats-text">${this.total}</p>
+				</div>
+			</div>
+			<div class="d-flex">
+				<div class="pr-2">
+					<p class="bar-stats-text text-right">Speed:</p>
+					<p class="bar-stats-text text-right">ETA:</p>
+				</div>
+				<div>
+					<p class="bar-stats-text">${this.speed}</p>
+					<p class="bar-stats-text">${this.eta}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Bar -->
+	<div class="d-flex align-items-center p-1">
+		<div class="progress flex-fill align-content-center">
+			<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${this.percentage}%"></div>
+		</div>
+		<p class="bar-percent-text align-content-center">${this.percentage}%</p>
+	</div>
+</div>
+`;
+	}
+}
+
 declare global {
 	interface HTMLElementTagNameMap {
 		"download-bar": DownloadBarElement;
+		"upload-bar": DownloadBarElement;
 	}
 }

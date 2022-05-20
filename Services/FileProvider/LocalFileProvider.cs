@@ -80,11 +80,13 @@ namespace WebFTPSharp.Services.FileProvider
 		{
 			List<NavigationItem> result = new List<NavigationItem>();
 
+			string finalPath = ConstructAndVerifyPath(path);
+			if (!Directory.Exists(finalPath))
+				throw new InvalidPathException();
+
 			updateLock.EnterReadLock();
 			try
 			{
-				string finalPath = ConstructAndVerifyPath(path);
-
 				// Construct Result
 				foreach (string mixedDirectoryPath in Directory.GetDirectories(finalPath))
 				{
@@ -123,7 +125,7 @@ namespace WebFTPSharp.Services.FileProvider
 
 			finalPath = Path.GetFullPath(finalPath);
 
-			if (!Path.IsPathFullyQualified(finalPath) || !Directory.Exists(finalPath) || !IsSubdirectory(basePath, finalPath))
+			if (!Path.IsPathFullyQualified(finalPath) || !IsSubdirectory(basePath, finalPath))
 				throw new InvalidPathException();
 
 			return NormalizePath(finalPath);
@@ -204,7 +206,10 @@ namespace WebFTPSharp.Services.FileProvider
 		// Upload a file
 		public async Task<string> UploadFileAsync(Stream requestBodyStream, List<string> path, string filename)
 		{
-			string finalFilePath = NormalizePath(ConstructAndVerifyPath(path) + "/" + filename);
+			var _path = new List<string>(path);
+			_path.Add(filename);
+			
+			string finalFilePath = ConstructAndVerifyPath(_path);
 
 			if (File.Exists(finalFilePath))
 				throw new ArgumentException($"File already exists at {finalFilePath}!", nameof(filename));
@@ -212,7 +217,9 @@ namespace WebFTPSharp.Services.FileProvider
 			// This will throw an exception if the filename is invalid
 			var fs = File.OpenWrite(finalFilePath);
 			await requestBodyStream.CopyToAsync(fs);
+
 			await fs.DisposeAsync();
+			await requestBodyStream.DisposeAsync();
 
 			// TODO: create a custom read/write lock, so that we don't need to refresh the whole file/hash tables
 			UpdateFiles();
