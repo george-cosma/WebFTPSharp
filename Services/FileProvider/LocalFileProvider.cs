@@ -161,7 +161,6 @@ namespace WebFTPSharp.Services.FileProvider
 			if (String.IsNullOrWhiteSpace(filepath)) return null;
 
 			// TODO: add read-lock on file 
-			// TODO: return a stream instead? It might use too much RAM for large files...
 			return File.ReadAllBytes(filepath);
 		}
 		public async Task<byte[]?> GetFileAsync(string id)
@@ -170,7 +169,6 @@ namespace WebFTPSharp.Services.FileProvider
 			if (String.IsNullOrWhiteSpace(filepath)) return null;
 
 			// TODO: add read-lock on file 
-			// TODO: return a stream instead? It might use too much RAM for large files...
 			return await File.ReadAllBytesAsync(filepath);
 		}
 		public Stream? GetFileStream(string id)
@@ -179,7 +177,6 @@ namespace WebFTPSharp.Services.FileProvider
 			if (String.IsNullOrWhiteSpace(filepath)) return null;
 
 			// TODO: add read-lock on file 
-			// TODO: return a stream instead? It might use too much RAM for large files...
 			return File.OpenRead(filepath);
 		}
 		private string? GetFilePath(string id)
